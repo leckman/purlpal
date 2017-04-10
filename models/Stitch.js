@@ -33,18 +33,67 @@ var Stitch = (function(stitchModel) {
 
   var that = {};
 
+  // initialize DB
+  var setUp = (function(){
+    // make sure knit stitch is in database
+    console.log("Setting Up");
+    stitchModel.findOne({name: "knit"}).exec(function(err, stitch){
+      if (err) {
+        var kJSON = {
+          name: "knit",
+          description: "Insert right needle from front to back into stitch. Wrap yarn around the right needle counterclockwise.",
+          type: "STITCH",
+          symbol: "V"
+        };
+
+        var knitStitch = new stitchModel(kJSON);
+        knitStitch.save(function(err, st){
+          if (err) {
+            console.log("WARNING: Knit Stitch Failed to Save");
+          } else {
+            console.log("Knit Stitch saved to database.");
+          }
+        });
+      } else {
+        console.log("Knit stitch already in database.");
+      }
+
+      if (err) {
+        var pJSON = {
+          name: "purl",
+          description: "Insert right needle from back to front into stitch. Wrap yarn around the right needle counterclockwise.",
+          type: "STITCH",
+          symbol: "-"
+        };
+
+        var purlStitch = new stitchModel(pJSON);
+        purlStitch.save(function(err, st) {
+          if (err) {
+            console.log("WARNING: Purl Stitch failed to save to database.");
+          } else {
+            console.log("Purl Stitch saved to database.");
+          }
+        });
+      } else {
+        console.log("Purl Stitch already in database");
+      }
+    });
+
+
+  })();
+
   that.getKnit = function(callback){
     stitchModel.findOne({name: "knit"}).exec(callback);
   };
 
   that.getPurl = function(callback){
-    stitchModel.findOne({name: "knit"}).exec(callback);
+    stitchModel.findOne({name: "purl"}).exec(callback);
   };
 
   Object.freeze(that);
 
   return that;
 
-}(rowModel));
+}(stitchModel));
 
-module.exports = Row;
+module.exports = Stitch;
