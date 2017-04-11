@@ -48,6 +48,7 @@ var Stitch = (function(stitchModel) {
 
         var knitStitch = new stitchModel(kJSON);
         knitStitch.save(function(err, st){
+          console.log("Saving Knit Stitch");
           if (err) {
             console.log("WARNING: Knit Stitch Failed to Save");
           }
@@ -66,6 +67,7 @@ var Stitch = (function(stitchModel) {
 
         var purlStitch = new stitchModel(pJSON);
         purlStitch.save(function(err, st) {
+          console.log("Saving Purl Stitch");
           if (err) {
             console.log("WARNING: Purl Stitch failed to save to database.");
           }

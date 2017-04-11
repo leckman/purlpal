@@ -29,9 +29,10 @@ require('babel-polyfill');
 var User = require('./models/User');
 
 // Controllers
+//var stitchController = require('./controllers/stitch');
+//var rowController = require('./controllers/row');
 var userController = require('./controllers/user');
 var contactController = require('./controllers/contact');
-var stitchController = require('./controllers/stitch');
 
 // React and Server-Side Rendering
 var routes = require('./app/routes');
