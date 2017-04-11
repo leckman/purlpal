@@ -1,4 +1,3 @@
-// Author: Laura
 var assert = require('chai').assert;
 //var request = require('supertest');
 var mongoose = require('mongoose');
