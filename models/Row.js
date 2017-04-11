@@ -47,14 +47,13 @@ var Row = (function(rowModel, Stitch) {
 
   var parseRow = function(row, callback){
     if (stitches.knit === undefined) {
-      // load stitches, TODO change to get all 
-      Stitch.getKnit(function(err, k) {
-        stitches.knit = k._id;
-        Stitch.getPurl(function(err, p) {
-          stitches.purl = p._id;
-          callback(parse(row));
-        });
-      });
+      // load stitches, TODO change to get all
+      Stitch.getAll(function(err, sts) {
+        for (var st of sts) {
+          stitches[st.name] = st._id;
+        }
+        callback(parse(row))
+      }) ;
     } else {
       callback(parse(row));
     }
@@ -63,16 +62,15 @@ var Row = (function(rowModel, Stitch) {
   var parseRows = function(rows, callback){
     if (stitches.knit === undefined) {
       // load stitches
-      Stitch.getKnit(function(err, k) {
-        stitches.knit = k._id;
-        Stitch.getPurl(function(err, p) {
-          stitches.purl = p._id;
-          var rs = [];
-          for (var row of rows) {
-            rs.push(parse(row));
-          }
-          callback(rs);
-        });
+      Stitch.getAll(function(err, sts) {
+        for (var st of sts) {
+          stitches[st.name] = st._id;
+        }
+        var rs = [];
+        for (var row of rows) {
+          rs.push(parse(row));
+        }
+        callback(rs);
       });
     } else {
       var rs = [];
