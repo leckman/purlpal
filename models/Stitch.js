@@ -36,7 +36,6 @@ var Stitch = (function(stitchModel) {
   // initialize DB
   var setUp = (function(){
     // make sure knit stitch is in database
-    console.log("Setting Up");
     stitchModel.findOne({name: "knit"}).exec(function(err, stitch){
       if (stitch === null) {
         var kJSON = {
@@ -90,6 +89,18 @@ var Stitch = (function(stitchModel) {
    */
   that.getPurl = function(callback){
     stitchModel.findOne({name: "purl"}).exec(callback);
+  };
+
+  that.getAll = function(callback) {
+    stitchModel.find({}).exec(callback);
+  };
+
+  that.getByName = function(name, callback) {
+    stitchModel.findOne({'name': name}, callback);
+  };
+
+  that.getById = function(id, callback) {
+    stitchModel.findById(id, callback);
   };
 
   Object.freeze(that);
