@@ -25,8 +25,8 @@ var processSpeech = function(transcript) {
     return false;
   }
 
-  if (userSaid(transcript, ["next"])) {
-    if (userSaid(transcript, ["stitch"])) {
+  if (userSaid(transcript, ["next", "advance", "move"])) {
+    if (userSaid(transcript, ["stitch", "ditch"])) {
       console.log("User wants to advance to next stitch");
       advanceStitch();
       return true;
@@ -34,6 +34,19 @@ var processSpeech = function(transcript) {
     if (userSaid(transcript, ["row"])) {
       console.log("User wants to advance to next row");
       advanceRow();
+      return true;
+    }
+  }
+
+  if (userSaid(transcript, ["help", "what", "how"])) {
+    if (userSaid(transcript, ["stitch", "ditch"])) {
+      console.log("User wants help on this stitch");
+      helpStitch();
+      return true;
+    }
+    if (userSaid(transcript, ["row"])) {
+      console.log("User wants help on this row");
+      helpRow();
       return true;
     }
   }

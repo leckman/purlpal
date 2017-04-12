@@ -67,4 +67,15 @@ advanceRow = function(){
   $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
 };
 
+helpStitch = function(){
+  var r = pattern.rows[pattern.current_row];
+  var st = r.stitches[pattern.current_stitch];
+  return "This is a " + st.name + " stitch. " + st.description;
+};
+
+helpRow = function(){
+  var r = pattern.rows[pattern.current_row];
+  return r.description;
+};
+
 });
