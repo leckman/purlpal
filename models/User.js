@@ -133,6 +133,8 @@ var User = (function(userModel){
     userModel.remove({_id: id}, callback);
   };
 
+  that.findOne = userModel.findOne;
+
   Object.freeze(that);
   return that;
 

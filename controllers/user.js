@@ -43,7 +43,7 @@ exports.ensureAuthenticated = function(req, res, next) {
       return res.status(400).send(errors);
     }
 
-    User.findOne({ email: req.body.email }, function(err, user) {
+    User.findByEmail(req.body.email, function(err, user) {
       if (!user) {
         return res.status(401).send({ msg: 'The email address ' + req.body.email + ' is not associated with any account. ' +
         'Double-check your email address and try again.'
@@ -62,6 +62,7 @@ exports.ensureAuthenticated = function(req, res, next) {
  * POST /signup
  */
 exports.signupPost = function(req, res, next) {
+  console.log("GOT TO SIGNUP POST");
   req.assert('name', 'Name cannot be blank').notEmpty();
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('email', 'Email cannot be blank').notEmpty();
@@ -74,17 +75,16 @@ exports.signupPost = function(req, res, next) {
     return res.status(400).send(errors);
   }
 
-  User.findOne({ email: req.body.email }, function(err, user) {
+  User.findByEmail(req.body.email, function(err, user) {
     if (user) {
     return res.status(400).send({ msg: 'The email address you have entered is already associated with another account.' });
     }
-    user = new User({
+    user = User.create({
       name: req.body.name,
       email: req.body.email,
       password: req.body.password
-    });
-    user.save(function(err) {
-    res.send({ token: generateToken(user), user: user });
+    }, function(err, u){
+      res.send({ token: generateToken(u), user: u });
     });
   });
 };
@@ -136,7 +136,7 @@ exports.accountPut = function(req, res, next) {
  * DELETE /account
  */
 exports.accountDelete = function(req, res, next) {
-  User.remove({ _id: req.user.id }, function(err) {
+  User.removeById(req.user.id, function(err) {
     res.send({ msg: 'Your account has been permanently deleted.' });
   });
 };
@@ -193,7 +193,7 @@ exports.forgotPost = function(req, res, next) {
       });
     },
     function(token, done) {
-      User.findOne({ email: req.body.email }, function(err, user) {
+      User.findByEmail(req.body.email, function(err, user) {
         if (!user) {
           return res.status(400).send({ msg: 'The email address ' + req.body.email + ' is not associated with any account.' });
         }
