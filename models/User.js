@@ -64,6 +64,78 @@ userSchema.options.toJSON = {
   }
 };
 
-var User = mongoose.model('User', userSchema);
+var userModel = mongoose.model('User', userSchema);
+
+var User = (function(userModel){
+
+  var that = {};
+
+  /**
+   * Creates a new user.
+   * @param {Object} json - form
+   *    {
+   *      username: String,
+   *      email: String,
+   *      password: String
+   *    }
+   * @param {Function} callback - a function of form callback(err, newUser)
+   */
+  that.create = function(json, callback) {
+    var user = new userModel(json);
+    user.save(function(err) {
+      callback(err, user);
+    });
+  };
+
+  /**
+   * @param userId
+   * @param patternId
+   * @param callback - function(err, newProject)
+   */
+  that.startProjectForUser = function(userId, patternId, callback) {
+    Project.create({pattern: patternId}, function(err, proj) {
+      userModel.findById(userId, function(err, user) {
+        user.projects.push(proj._id);
+        user.save(function(err) {
+          callback(err, proj);
+        });
+      });
+    });
+  };
+
+  that.getAllProjects = function(userId, callback) {
+    userModel.findById(userId, function(err, user) {
+      callback(err, user.projects);
+    });
+  };
+
+  /**
+   * Finds a user with the given email
+   * @param {String} email
+   * @param {Function} callback - a function of  the form callback(error, user)
+   */
+  that.findByEmail = function(email, callback) {
+
+    userModel.findOne({ 'email': email }, callback);
+  };
+
+  /**
+   * Copy of findById
+   */
+  that.findById = function(userid, callback) {
+    userModel.findById(userid, callback);
+  };
+
+  /**
+   * Copy of remove function to delete documents
+   */
+  that.removeById = function(id, callback) {
+    userModel.remove({_id: id}, callback);
+  };
+
+  Object.freeze(that);
+  return that;
+
+})(userModel);
 
 module.exports = User;
