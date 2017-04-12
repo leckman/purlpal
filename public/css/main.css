@@ -23,6 +23,19 @@ a {
   color: #1d7cf4;
 }
 
+table.pattern {
+  text-align: center;
+}
+
+tr.selectedRow {
+  background-color: #ffb3ff;
+}
+
+td.selectedStitch {
+  background-color: #dc87ff;
+  color: white;
+}
+
 a:hover {
   text-decoration: none;
 }

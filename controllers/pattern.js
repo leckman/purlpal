@@ -19,7 +19,10 @@ exports.getAllPublic = function(req, res) {
 };
 
 exports.getExpanded = function(req, res) {
-  res.send({msg: 'Not Yet Implemented'});
+  console.log(req);
+  Pattern.fullyPopulate(req.params.patternId, function(err, pat) {
+    res.send({pattern: pat});
+  });
 };
 
 exports.getAllCreated = function(req, res) {
