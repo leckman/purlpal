@@ -17,13 +17,6 @@ recognition.onresult = function(event) {
       transcript += event.results[i][0].transcript;
   }
 
-  if (DEBUGSPEECH) {
-    if (hasFinal)
-      otherFeedback.setContent("SPEECH DEBUG: ready");
-    else
-      otherFeedback.setContent("SPEECH DEBUG: " + transcript);
-  }
-
   var processed = debouncedProcessSpeech(transcript);
 
   // If we reacted to speech, kill recognition and restart
@@ -34,8 +27,6 @@ recognition.onresult = function(event) {
 // Restart recognition if it has stopped
 recognition.onend = function(event) {
   setTimeout(function() {
-    if (DEBUGSPEECH)
-      otherFeedback.setContent("SPEECH DEBUG: ready");
     recognition.start();
   }, 1000);
 };
