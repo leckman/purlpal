@@ -38,7 +38,6 @@ advanceStitch = function(){
   }
 
   var current_row_length= $("#" + getIdOfRow(pattern.current_row) + " td").length;
-  console.log("there are " + current_row_length + " stitches in this row");
   if (pattern.current_stitch + 1 < current_row_length) {
     $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
     pattern.current_stitch += 1;
@@ -52,6 +51,20 @@ advanceStitch = function(){
     $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
   }
 
+};
+
+advanceRow = function(){
+  if (!patternLoaded) {
+    console.log("Hold on! Still setting up.");
+    return;
+  }
+
+  $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
+  $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
+  pattern.current_row += 1;
+  pattern.current_stitch = 0;
+  $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
+  $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
 };
 
 });

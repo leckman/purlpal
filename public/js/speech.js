@@ -6,6 +6,9 @@ console.log("Ready to Detect Speech Input");
 //    transcript, a string of possibly multiple words that were recognized
 var processSpeech = function(transcript) {
 
+  console.log("I heard...");
+  console.log(transcript);
+
   // Helper function to detect if any commands appear in a string
   var userSaid = function(str, commands) {
     str = str.toLowerCase();
@@ -30,6 +33,7 @@ var processSpeech = function(transcript) {
     }
     if (userSaid(transcript, ["row"])) {
       console.log("User wants to advance to next row");
+      advanceRow();
       return true;
     }
   }
