@@ -6,6 +6,8 @@ var Pattern = require('../../../models/Pattern.js');
 
 // Reset our mongoose collections so that the tests can run successfully.
 mongoose.connection.collections.patterns.remove();
+mongoose.connection.collections.rows.remove();
+mongoose.connection.collections.projects.remove();
 
 describe('Pattern API', function() {
 
@@ -18,6 +20,7 @@ describe('Pattern API', function() {
     var multiRows = [stitches, stitches, stitches, stitches, stitches, stitches, stitches, stitches];
     var c1 = "58ebeb54575bc4ae45bd81b6"; // bogus
     var c2 = "58ebeb54575bc4ae45bd81b5"; // bogus
+    var pid;
 
     describe('Create', function() {
 
@@ -40,6 +43,7 @@ describe('Pattern API', function() {
               assert.isNotNull(pat);
               assert.equal(pat.rows.length, 8);
               assert.isNull(err);
+              pid = pat._id;
               done();
             });
         });
@@ -53,9 +57,6 @@ describe('Pattern API', function() {
               'creator': c2,
               'public': true
             }, function(err, pat) {
-              console.log("Public Pattern");
-              console.log(err);
-              console.log(pat);
               assert.isNotNull(pat);
               assert.equal(pat.rows.length, 8);
               assert.isNull(err);
@@ -85,5 +86,15 @@ describe('Pattern API', function() {
         });
       });
 
+      it("fully populated pattern", function(done) {
+        Pattern.fullyPopulate(pid, function(err, res) {
+          assert.isNull(err);
+          assert.isDefined(res.rows[0].stitches);
+          assert.equal(res.rows[0].stitches.length, stitches.length);
+          done();
+        });
+      });
+
     });
+
 });

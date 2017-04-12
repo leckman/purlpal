@@ -45,8 +45,6 @@ var Pattern = (function(patModel) {
   that.create = function(json, callback) {
     // first create rows
     Row.createMany(json.rows, function(err, rows){
-      console.log("created some rows");
-      console.log(rows[0]._id);
       for (var i = 0; i < json.rows.length; i++) {
         json.rows[i] = rows[i]._id;
       }
@@ -93,6 +91,12 @@ var Pattern = (function(patModel) {
 
   that.getById = function(id, callback) {
     patModel.findById(id, callback);
+  };
+
+  that.fullyPopulate = function(id, callback) {
+    patModel.find({_id: id}).populate({path : 'rows', populate : {path : 'stitches'}}).exec(function (err, res) {
+      callback(err, res[0]);
+    });
   };
 
   Object.freeze(that);
