@@ -31,6 +31,7 @@ var User = require('./models/User');
 // Controllers
 //var stitchController = require('./controllers/stitch');
 //var rowController = require('./controllers/row');
+var patternController = require('./controllers/pattern');
 var userController = require('./controllers/user');
 var contactController = require('./controllers/contact');
 
@@ -117,6 +118,10 @@ app.post('/auth/google', userController.authGoogle);
 app.get('/auth/google/callback', userController.authGoogleCallback);
 app.post('/auth/twitter', userController.authTwitter);
 app.get('/auth/twitter/callback', userController.authTwitterCallback);
+app.get('/patterns', patternController.getAllPublic);
+app.get('/patterns/:patternId', patternController.getExpanded);
+app.get('/account/projects/:projectId', userController.getProjects);
+app.post('/account/projects', userController.createProject);
 
 // React server rendering
 app.use(function(req, res) {
