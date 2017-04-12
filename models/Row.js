@@ -163,7 +163,7 @@ var Row = (function(rowModel, Stitch) {
    * @param {Function} callback - A function of form callback(err, length)
    */
   that.getRowLength = function(rowId, callback){
-    rowModel.findById(rowId).exec(function(err, r) {
+    rowModel.findById(rowId, function(err, r) {
       if (err) {
         callback(err, null);
       } else {

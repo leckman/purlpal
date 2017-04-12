@@ -19,6 +19,7 @@ describe('Row API', function() {
     var stitches = ["knit", "knit", "purl", "purl", "knit", "knit", "purl", "purl"];
     var stitches2 = ["purl", "purl", "knit", "knit", "purl", "purl", "knit", "knit"];
     var multiRows = [stitches, stitches2];
+    var rid;
 
     describe('Create', function() {
 
@@ -32,6 +33,7 @@ describe('Row API', function() {
               assert.isNotNull(row);
               assert.equal(row.stitches[0], row.stitches[1]);
               assert.isNull(err);
+              rid = row._id;
               done();
             });
         });
@@ -44,5 +46,15 @@ describe('Row API', function() {
           });
         });
 
+    });
+
+    describe("Get", function() {
+
+      it("Row Length", function(done) {
+        Row.getRowLength(rid, function(err, len) {
+          assert.equal(len, stitches.length);
+          done();
+        });
+      });
     });
 });
