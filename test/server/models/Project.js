@@ -7,6 +7,8 @@ var Project = require('../../../models/Project.js');
 
 // Reset our mongoose collections so that the tests can run successfully.
 mongoose.connection.collections.patterns.remove();
+mongoose.connection.collections.rows.remove();
+mongoose.connection.collections.projects.remove();
 
 describe('Project API', function() {
 

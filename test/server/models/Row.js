@@ -4,10 +4,9 @@ var mongoose = require('mongoose');
 var app = require('../../../server.js');
 var Row = require('../../../models/Row.js');
 
-// Reset our mongoose collections so that the tests can run successfully.
-//for (var i in mongoose.connection.collections) {
-//    mongoose.connection.collections[i].remove();
-//}
+mongoose.connection.collections.patterns.remove();
+mongoose.connection.collections.rows.remove();
+mongoose.connection.collections.projects.remove();
 
 describe('Row API', function() {
 

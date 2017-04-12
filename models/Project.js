@@ -70,10 +70,7 @@ var Project = (function(projModel) {
         pop_proj = res[0];
       }
       var current_row = pop_proj.pattern.rows[pop_proj.current_row];
-      console.log("Trying to advance from", pop_proj.current_row, pop_proj.current_stitch);
-      console.log("current row", current_row);
       Row.getRowLength(current_row, function(err, len) {
-        console.log("Row length is", len);
         if (pop_proj.current_stitch + 1 < len) {
           pop_proj.current_stitch = pop_proj.current_stitch + 1;
           pop_proj.save(callback);
@@ -91,8 +88,6 @@ var Project = (function(projModel) {
   that.advanceRow = function(id, callback) {
 
     projModel.find({'_id': id}).populate('pattern').exec(function(err, res) {
-      console.log("in advance row");
-      console.log(pop_proj);
       var pop_proj;
       if (err === null) {
         pop_proj = res[0];

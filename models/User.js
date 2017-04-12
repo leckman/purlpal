@@ -1,6 +1,7 @@
 var crypto = require('crypto');
 var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('mongoose');
+var Project = require('./Project');
 
 var schemaOptions = {
   timestamps: true,
@@ -23,7 +24,11 @@ var userSchema = new mongoose.Schema({
   twitter: String,
   google: String,
   github: String,
-  vk: String
+  vk: String,
+  projects: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Project'
+  }]
 }, schemaOptions);
 
 userSchema.pre('save', function(next) {

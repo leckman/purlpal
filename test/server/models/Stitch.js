@@ -9,6 +9,9 @@ var Stitch = require('../../../models/Stitch.js');
 //for (var i in mongoose.connection.collections) {
 //    mongoose.connection.collections[i].remove();
 //}
+mongoose.connection.collections.patterns.remove();
+mongoose.connection.collections.rows.remove();
+mongoose.connection.collections.projects.remove();
 
 describe('Row API', function() {
 

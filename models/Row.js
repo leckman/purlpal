@@ -67,15 +67,15 @@ var Row = (function(rowModel, Stitch) {
           stitches[st.name] = st._id;
         }
         var rs = [];
-        for (var row of rows) {
-          rs.push(parse(row));
+        for (var i = 0; i < rows.length; i++) {
+          rs.push(parse(rows[i]));
         }
         callback(rs);
       });
     } else {
       var rs = [];
-      for (var row of rows) {
-        rs.push(parse(row));
+      for (var i = 0; i < rows.length; i++) {
+        rs.push(parse(rows[i]));
       }
       callback(rs);
     }
@@ -95,14 +95,17 @@ var Row = (function(rowModel, Stitch) {
   that.createMany = function(rows, callback) {
 
     parseRows(rows, function(rs) {
+      var corrected_rows = [];
       for (var i = 0; i < rows.length; i++) {
-        rows[i] = {'stitches': rs[i]};
+        corrected_rows[i] = {'stitches': rs[i]};
       }
+
+      rowModel.insertMany(corrected_rows, function(err, docs) {
+        callback(err, docs);
+      });
     });
 
-    rowModel.insertMany(rows, function(err, docs) {
-      callback(err, docs);
-    });
+
   };
 
   /**
