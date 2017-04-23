@@ -1,5 +1,44 @@
 console.log("Ready to Detect Speech Input");
 
+// setup slider with speech commands
+
+$().ready(function(){
+
+  var speechCommands = "<h2>Speech Commands</h2>" + "<h3>Navigation</h3><p>Next Stitch</p><p>Next Row</p>" + "<h3>Help</h3><p>What is this stitch/row?</p>";
+
+  $("#app-body").append('<div id="sidebar"><div id="toggle-div"></div><div id="speech-info" >'+speechCommands+'</div></div>');
+  $("#toggle-div").append("<br><button id='toggle-speech-info' type='button' class='btn'>\<\<</button>");
+  $("#speech-info").hide();
+  $("#toggle-speech-info").click(function () {
+  		if ($(this).data('name') == 'show') {
+          $("#sidebar").animate({
+            width: '8%'
+          });
+          $('#toggle-speech-info').html("\<\<");
+  		    $("#speech-info").animate({
+  		        width: '0%'  		    }).hide();
+  		    $("#pattern-container").animate({
+  		        width: '90%'
+  		    });
+  		    $(this).data('name', 'hide');
+  		 } else {
+            $('#toggle-speech-info').html("\>\>");
+            $("#sidebar").animate({
+              width: '23%'
+            });
+  		     $("#speech-info").animate({
+  		         width: '80%'  		     }).show();
+  		     $("#pattern-container").animate({
+  		        width: '75%'
+  		     });
+  		     $(this).data('name', 'show');
+  		 }
+  });
+
+});
+
+
+
 var keyWords = {
   stitch: ["stitch", "ditch", "forward", "step", "state", "stick"],
   row: ["row", "roll", "room", "down", "route"],

@@ -68,10 +68,12 @@ class Patterns extends React.Component {
       i = i + 3;
     }
     return (
+      <div id="app-body">
       <div id="pattern-container" className="container-fluid">
         <Messages messages={this.props.messages}/>
         {rows}
         <h1 id="heading">Fetching Patterns...</h1>
+      </div>
       </div>
     );
   }
