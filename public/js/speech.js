@@ -7,14 +7,15 @@ $().ready(function(){
   var speechCommands = "<h2>Speech Commands</h2>" + "<h3>Navigation</h3><p>Next Stitch</p><p>Next Row</p>" + "<h3>Help</h3><p>What is this stitch/row?</p>";
 
   $("#app-body").append('<div id="sidebar"><div id="toggle-div"></div><div id="speech-info" >'+speechCommands+'</div></div>');
-  $("#toggle-div").append("<br><button id='toggle-speech-info' type='button' class='btn'>\<\<</button>");
+  $("#toggle-div").append("<br><button id='toggle-speech-info' type='button' class='btn'>? \<\<</button>");
+  $("#speech-info").append("<div><button id='mic-off' type='button' class='btn'>Turn Off Voice Recognition</button></div>");
   $("#speech-info").hide();
   $("#toggle-speech-info").click(function () {
   		if ($(this).data('name') == 'show') {
           $("#sidebar").animate({
             width: '8%'
           });
-          $('#toggle-speech-info').html("\<\<");
+          $('#toggle-speech-info').html("? \<\<");
   		    $("#speech-info").animate({
   		        width: '0%'  		    }).hide();
   		    $("#pattern-container").animate({
@@ -22,7 +23,7 @@ $().ready(function(){
   		    });
   		    $(this).data('name', 'hide');
   		 } else {
-            $('#toggle-speech-info').html("\>\>");
+            $('#toggle-speech-info').html("? \>\>");
             $("#sidebar").animate({
               width: '23%'
             });
