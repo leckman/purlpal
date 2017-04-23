@@ -23,8 +23,12 @@ $(function(){
           $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
           patternLoaded = true;
           $("#pattern-container").append("<button id='advance-stitch-button' type='button' class='btn'>Advance Stitch</button>");
+          $("#pattern-container").append("<button id='advance-row-button' type='button' class='btn'>Advance Row</button>");
           $( "#advance-stitch-button" ).click(function() {
             advanceStitch();
+          });
+          $( "#advance-row-button" ).click(function() {
+            advanceRow();
           });
         }
       );

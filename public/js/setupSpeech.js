@@ -2,7 +2,7 @@
 /******** SPEECH RECOGNITION SETUP YOU CAN IGNORE ****************/
 /*****************************************************************/
 var debouncedProcessSpeech = _.debounce(processSpeech, 500);
-
+var OFF = false;
 var recognition = new webkitSpeechRecognition();
 recognition.continuous = true;
 recognition.interimResults = true;
@@ -27,10 +27,30 @@ recognition.onresult = function(event) {
 // Restart recognition if it has stopped
 recognition.onend = function(event) {
   setTimeout(function() {
-    recognition.start();
+    if (!OFF) {
+      recognition.start();
+    }
   }, 1000);
 };
 recognition.start();
+
+var turnOffMic = (function(r) {
+  return function(){
+    OFF = true;
+    r.stop();
+  };
+})(recognition);
+
+var turnOnMic = function() {
+  OFF = false;
+  recognition.start();
+};
+
+$("#pattern-container").append("<div><button id='mic-off' type='button' class='btn'>Turn Off Voice Recognition</button></div>");
+$("#mic-off").click(function(){
+  turnOffMic();
+  console.log("Voice recognition is now off");
+});
 /*****************************************************************/
 /******** END OF SPEECH RECOG SETUP ******************************/
 /*****************************************************************/

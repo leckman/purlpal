@@ -23,8 +23,22 @@ a {
   color: #1d7cf4;
 }
 
-table.pattern {
+div {
+  margin: 0 auto;
+  width: auto;
   text-align: center;
+}
+
+table.pattern {
+  margin: 0 auto;
+  width: auto;
+}
+
+td.pattern{
+  display: block;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 50px;
 }
 
 tr.selectedRow {
@@ -34,6 +48,11 @@ tr.selectedRow {
 td.selectedStitch {
   background-color: #dc87ff;
   color: white;
+}
+
+.btn {
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 a:hover {
