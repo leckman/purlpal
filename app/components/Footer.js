@@ -4,7 +4,7 @@ class Footer extends React.Component {
   render() {
     return (
       <footer>
-        <p>© 2016 Company, Inc. All Rights Reserved.</p>
+        <p>© 2017 Laura Eckman. Final Project, 6.835 Multimodal User Interfaces.</p>
       </footer>
     );
   }
