@@ -1,5 +1,12 @@
 console.log("Ready to Detect Speech Input");
 
+var keyWords = {
+  stitch: ["stitch", "ditch", "forward", "step", "state", "stick"],
+  row: ["row", "roll", "room", "down", "route"],
+  move: ["next", "advance", "move", "go"],
+  help: ["help", "what", "how"]
+};
+
 // processSpeech(transcript)
 //  Is called anytime speech is recognized by the Web Speech API
 // Input:
@@ -25,26 +32,28 @@ var processSpeech = function(transcript) {
     return false;
   }
 
-  if (userSaid(transcript, ["next", "advance", "move"])) {
-    if (userSaid(transcript, ["stitch", "ditch"])) {
+  // Pattern Navigation
+  if (userSaid(transcript, keyWords.move)) {
+    if (userSaid(transcript, keyWords.stitch)) {
       console.log("User wants to advance to next stitch");
       advanceStitch();
       return true;
     }
-    if (userSaid(transcript, ["row"])) {
+    if (userSaid(transcript, keyWords.row)) {
       console.log("User wants to advance to next row");
       advanceRow();
       return true;
     }
   }
 
-  if (userSaid(transcript, ["help", "what", "how"])) {
-    if (userSaid(transcript, ["stitch", "ditch"])) {
-      console.log("User wants help on this stitch");
-      helpStitch();
+  // Assistance
+  if (userSaid(transcript, keyWords.help)) {
+    if (userSaid(transcript, keyWords.stitch)) {
+      //console.log("User wants help on this stitch");
+      console.log(helpStitch());
       return true;
     }
-    if (userSaid(transcript, ["row"])) {
+    if (userSaid(transcript, keywords.row)) {
       console.log("User wants help on this row");
       helpRow();
       return true;
