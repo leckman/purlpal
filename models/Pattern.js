@@ -19,6 +19,7 @@ var patSchema = new mongoose.Schema({
     ref: 'User'
   },
   notes: String,
+  name: String,
   rows: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Row'}]
