@@ -24,7 +24,8 @@ var stitchSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: typeValidator },
-  symbol: String
+  r_symbol: String,
+  w_symbol: String
 }, schemaOptions);
 
 var stitchModel = mongoose.model('Stitch', stitchSchema);
@@ -42,7 +43,8 @@ var Stitch = (function(stitchModel) {
           name: "knit",
           description: "Insert right needle from front to back into stitch. Wrap yarn around the right needle counterclockwise.",
           type: "STITCH",
-          symbol: "V"
+          r_symbol: "V",
+          w_symbol: "-"
         };
 
         var knitStitch = new stitchModel(kJSON);
@@ -61,7 +63,8 @@ var Stitch = (function(stitchModel) {
           name: "purl",
           description: "Insert right needle from back to front into stitch. Wrap yarn around the right needle counterclockwise.",
           type: "STITCH",
-          symbol: "-"
+          r_symbol: "-",
+          w_symbol: "V"
         };
 
         var purlStitch = new stitchModel(pJSON);
