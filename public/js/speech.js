@@ -34,6 +34,8 @@ $().ready(function(){
   		 }
   });
 
+  generateSpeech("Welcome to Pearl Pal");
+
 });
 
 
@@ -87,16 +89,37 @@ var processSpeech = function(transcript) {
   // Assistance
   if (userSaid(transcript, keyWords.help)) {
     if (userSaid(transcript, keyWords.stitch)) {
-      //console.log("User wants help on this stitch");
-      console.log(helpStitch());
+      var info = helpStitch();
+      console.log(info);
+      generateSpeech(info);
       return true;
     }
     if (userSaid(transcript, keywords.row)) {
       console.log("User wants help on this row");
-      helpRow();
+      var info = helpRow();
+      console.log(info);
+      generateSpeech(info);
       return true;
     }
   }
 
   return false; // no action taken
+};
+
+var voicesReady = false;
+window.speechSynthesis.onvoiceschanged = function() {
+  voicesReady = true;
+};
+
+var generateSpeech = function(message, callback) {
+  var VOICEINDEX = 49; // google british female
+  if (voicesReady) {
+    var msg = new SpeechSynthesisUtterance();
+    msg.voice = window.speechSynthesis.getVoices()[VOICEINDEX];
+    msg.text = message;
+    msg.rate = 1.0;
+    if (typeof callback !== "undefined")
+      msg.onend = callback;
+    speechSynthesis.speak(msg);
+  }
 };
