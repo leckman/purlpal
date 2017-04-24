@@ -4,18 +4,17 @@ console.log("Ready to Detect Speech Input");
 
 $().ready(function(){
 
-  var speechCommands = "<h2>Speech Commands</h2>" + "<h3>Navigation</h3><p>Next Stitch</p><p>Next Row</p>" + "<h3>Help</h3><p>What is this stitch/row?</p>";
+  var speechCommands = "<h3>Speech Commands</h2>" + "<h4>Navigation</h4><p>Next Stitch</p><p>Next Row</p>" + "<h4>Help</h4><p>What is this stitch/row?</p>";
 
   $("#app-body").append('<div id="sidebar"><div id="toggle-div"></div><div id="speech-info" >'+speechCommands+'</div></div>');
-  $("#toggle-div").append("<br><button id='toggle-speech-info' type='button' class='btn'>? \<\<</button>");
-  $("#speech-info").append("<div><button id='mic-off' type='button' class='btn'>Turn Off Voice Recognition</button></div>");
+  $("#toggle-div").append("<br><button id='toggle-speech-info' type='button' class='btn'><i class='fa fa-cog fa-lg' aria-hidden='true'></i></button>");
+  $("#speech-info").append("<button id='mic-off' type='button' class='btn'>Turn Off Voice Recognition</button>");
   $("#speech-info").hide();
   $("#toggle-speech-info").click(function () {
   		if ($(this).data('name') == 'show') {
           $("#sidebar").animate({
             width: '8%'
           });
-          $('#toggle-speech-info').html("? \<\<");
   		    $("#speech-info").animate({
   		        width: '0%'  		    }).hide();
   		    $("#pattern-container").animate({
@@ -23,7 +22,6 @@ $().ready(function(){
   		    });
   		    $(this).data('name', 'hide');
   		 } else {
-            $('#toggle-speech-info').html("? \>\>");
             $("#sidebar").animate({
               width: '23%'
             });
