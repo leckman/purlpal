@@ -29,6 +29,28 @@ div {
   text-align: center;
 }
 
+#pattern-container{
+  width: 90%;
+  float: left;
+}
+
+#sidebar {
+  width: 8%;
+  position: relative;
+  float: right;
+}
+
+#toggle-div {
+  float: left;
+}
+
+#speech-info{
+  text-align: left;
+  padding: 10px 10px 10px 10px;
+  width: 0%;
+  float: right;
+}
+
 table.pattern {
   margin: 0 auto;
   width: auto;

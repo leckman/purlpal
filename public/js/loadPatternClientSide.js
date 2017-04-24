@@ -1,4 +1,3 @@
-console.log("Loading Pattern");
 $(function(){
   console.log("DOM loaded");
 
@@ -8,6 +7,7 @@ $(function(){
   $.get(
     "patterns",
     function(response) {
+      console.log("Loading Pattern");
       var pid = response.patterns[0]._id;
       $.get(
         "patterns/"+pid,
@@ -16,7 +16,6 @@ $(function(){
           pattern.current_row = 0;
           pattern.current_stitch = 0;
           $("#heading").text("Pattern: Stockinette Square");
-          console.log($("#pattern-container"));
           $("#pattern-container").append("<h5>"+pattern.notes+"</h5");
           $("#pattern-container").append(formatPattern(pattern));
           $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");

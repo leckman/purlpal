@@ -41,16 +41,24 @@ var turnOffMic = (function(r) {
   };
 })(recognition);
 
-var turnOnMic = function() {
-  OFF = false;
-  recognition.start();
-};
+var turnOnMic = (function(r) {
+  return function(){
+    OFF = false;
+    r.start();
+  };
+})(recognition);
 
-$("#pattern-container").append("<div><button id='mic-off' type='button' class='btn'>Turn Off Voice Recognition</button></div>");
-$("#mic-off").click(function(){
-  turnOffMic();
-  console.log("Voice recognition is now off");
+$().ready(function() {
+
+  $("#mic-off").click(function(){
+    if (OFF) {
+      turnOnMic();
+      $("#mic-off").html("Turn Off Voice Recognition");
+      console.log("Voice recognition is now on");
+    } else {
+      turnOffMic();
+      console.log("Voice recognition is now off");
+      $("#mic-off").html("Turn On Voice Recognition");
+    }
+  });
 });
-/*****************************************************************/
-/******** END OF SPEECH RECOG SETUP ******************************/
-/*****************************************************************/

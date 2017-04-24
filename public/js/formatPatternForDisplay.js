@@ -1,7 +1,7 @@
 // returns html string
 formatPattern = function(pattern) {
   var rows = pattern.rows;
-  var htmlTable = "<table class='pattern table'>";
+  var htmlTable = "<div id='pattern-table'><table class='pattern table'>";
   rows.forEach(function(row, i) {
     var htmlRow = "<tr id='"+getIdOfRow(i)+"'>";
     var stitches = row.stitches;
@@ -14,7 +14,7 @@ formatPattern = function(pattern) {
     htmlRow += "</tr>";
     htmlTable += htmlRow;
   });
-  return htmlTable;
+  return htmlTable+"</table></div>";
 };
 
 getIdOfStitch = function(row, col) {
