@@ -1,43 +1,50 @@
 console.log("Ready to Detect Leap Motion Data");
+
+var calibrationPeriod = 50; // time to calibrate to tool location before detection starts
+var sampleFrequency = 5; // to reduce noise, only sample every 5 frames
+
+// TODO make sure stitches aren't registered too close in time (eliminate duplicates)
 var t_since_last_stitch = 0;
 var t_since_armed = 0;
-var last_left = 100000;
-var last_right = 0;
-var potential_stitch = false;
 var t_threshold = 2;
-var y_threshold = 2;
 
-var controller = Leap.loop({ hand: function(hand) {
+var y_threshold = 2; // boundary around middle calibration point
+var v_threshold = 40; // velocity constraint on detection
 
-  // TODO probably some smoothing
-  if (hand.type == "left") {
-    last_left = hand.thumb.bones[2].prevJoint[1];
+var tipPosition = 0;
+var tipCoordinate = 2; // vertical if leap is pointed at you
+var tipSum = 0;
+var tipAvg = 0;
+var inStitchSequence = false;
+var t = 0;
+
+var controller = Leap.loop({frame: function(frame) {
+  if (frame.tools.length > 0) {
+    if (t < calibrationPeriod) {
+      tipSum += frame.tools[0].tipPosition[tipCoordinate];
+      tipAvg = tipSum/t;
+      tipPosition = tipAvg;
+    } else if ((t % sampleFrequency) === 0) {
+      // looking at y coordinate
+      var newTipPosition = frame.tools[0].tipPosition[tipCoordinate];
+      tipPosition = (newTipPosition + tipPosition)/2; // to further reduce noise, average samples
+      var newTipVelocity = frame.tools[0].tipVelocity[tipCoordinate];
+
+      if ((tipPosition + y_threshold > tipAvg) && !inStitchSequence) {
+        console.log("Beginning Stitch Sequence");
+        inStitchSequence = true;
+      } else if ((t % 100) === 0) {
+        console.log("Y: " + tipPosition + " avg: " + tipAvg);
+        //console.log(frame.tools[0].tipPosition);
+      }
+
+      if ((tipPosition < tipAvg + y_threshold) && inStitchSequence) {
+        console.log("######Stitch Counted######");
+        console.log("      velo: " + newTipVelocity);
+        console.log("      y: " + tipPosition);
+        inStitchSequence = false;
+      }
+    }
+    t+=1; // only increment if tool is present
   }
-  if (hand.type == "right") {
-    last_right = hand.thumb.bones[2].prevJoint[1];
-  }
-
-  t_since_last_stitch += 1;
-  t_since_armed += 1;
-
-  //console.log(hand.thumb.dipPosition);
-
-  if ((last_right - last_left > y_threshold) && (t_since_last_stitch > t_threshold) && !potential_stitch) {
-    // right hand above left
-    potential_stitch = true;
-    t_since_armed = 0;
-    console.log("ARMING STITCH");
-  }
-
-  if ((y_threshold < last_left - last_right) && (t_since_armed > t_threshold) && potential_stitch) {
-    // right hand below left ->> STITCH
-    potential_stitch = false;
-    t_since_last_stitch = 0;
-    console.log("STITCH DETECTED");
-    //console.log(hand);
-    //console.log("WRIST");
-    //console.log(hand.thumb.bones[2].prevJoint[1]); // y coordinate of intermediate phalanx in thumb
-    advanceStitch();
-  }
-
 }});
