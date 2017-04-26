@@ -1,7 +1,7 @@
 // returns html string
 formatRSPattern = function(pattern) {
   var rows = pattern.rows;
-  var htmlTable = "<table class='pattern table'>";
+  var htmlTable = "<table class='pattern table table-bordered'>";
   rows.forEach(function(row, i) {
     var htmlRow = "<tr id='"+getIdOfRow(i)+"'>";
     var stitches = row.stitches;
@@ -19,7 +19,7 @@ formatRSPattern = function(pattern) {
 
 formatWSPattern = function(pattern) {
   var rows = pattern.rows;
-  var htmlTable = "<table class='pattern table'>";
+  var htmlTable = "<table class='pattern table table-bordered'>";
   rows.forEach(function(row, i) {
     var htmlRow = "<tr id='"+getIdOfRow(i)+"'>";
     var stitches = row.stitches;
