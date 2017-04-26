@@ -6,16 +6,16 @@ $().ready(function(){
 
   var speechCommands = "<h3>Speech Commands</h2>" + "<h4>Navigation</h4><p>Next Stitch</p><p>Next Row</p>" + "<h4>Help</h4><p>What is this stitch/row?</p>";
 
-  $("#app-body").append('<div id="sidebar"><div id="toggle-div"></div><div id="speech-info" >'+speechCommands+'</div></div>');
-  $("#toggle-div").append("<br><button id='toggle-speech-info' type='button' class='btn'><i class='fa fa-cog fa-lg' aria-hidden='true'></i></button>");
-  $("#speech-info").append("<button id='mic-off' type='button' class='btn'>Turn Off Voice Recognition</button>");
-  $("#speech-info").hide();
-  $("#toggle-speech-info").click(function () {
+  $("#app-body").append('<div id="sidebar"><div id="toggle-div"></div><div id="info" >'+speechCommands+'</div></div>');
+  $("#toggle-div").append("<br><button id='toggle-info' type='button' class='btn'><i class='fa fa-cog fa-lg' aria-hidden='true'></i></button>");
+  $("#info").append("<button id='mic-off' type='button' class='btn'>Turn Off Voice Recognition</button>");
+  $("#info").hide();
+  $("#toggle-info").click(function () {
   		if ($(this).data('name') == 'show') {
           $("#sidebar").animate({
             width: '8%'
           });
-  		    $("#speech-info").animate({
+  		    $("#info").animate({
   		        width: '0%'  		    }).hide();
   		    $("#pattern-container").animate({
   		        width: '90%'
@@ -25,7 +25,7 @@ $().ready(function(){
             $("#sidebar").animate({
               width: '23%'
             });
-  		     $("#speech-info").animate({
+  		     $("#info").animate({
   		         width: '80%'  		     }).show();
   		     $("#pattern-container").animate({
   		        width: '75%'
@@ -33,9 +33,6 @@ $().ready(function(){
   		     $(this).data('name', 'show');
   		 }
   });
-
-  generateSpeech("Welcome to Pearl Pal");
-
 });
 
 
