@@ -8,7 +8,7 @@ import { browserHistory } from 'react-router';
 export function facebookLogin() {
   const facebook = {
     url: 'http://localhost:3000/auth/facebook',
-    clientId: '980220002068787',
+    clientId: '1486504278090535',
     redirectUri: 'http://localhost:3000/auth/facebook/callback',
     authorizationUrl: 'https://www.facebook.com/v2.5/dialog/oauth',
     scope: 'email,user_location',
@@ -258,4 +258,3 @@ function closePopup({ window, interval }) {
     resolve();
   });
 }
-

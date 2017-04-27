@@ -16,15 +16,15 @@ class Patterns extends React.Component {
 
   componentDidMount(){
     console.log("Componenet Did Mount");
-    var that = this;
-    Pattern.getAllPublic(function(err, pats) {
-      console.log(this);
-      console.log(that);
-      console.log(pats.length);
-      var newState = that.state;
-      newState.patterns = pats;
-      that.setState(newState);
-    });
+    //var that = this;
+    //Pattern.getAllPublic(function(err, pats) {
+      //console.log(this);
+      //console.log(that);
+      //console.log(pats.length);
+      //var newState = that.state;
+      //newState.patterns = pats;
+      //that.setState(newState);
+    //});
   }
 
   renderOne(pattern) {
@@ -50,12 +50,12 @@ class Patterns extends React.Component {
   }
 
   render() {
-    console.log("RENDERING");
+    //console.log("RENDERING");
     var rows = [];
     const that = this;
     var i = 0;
-    console.log("This.State");
-    console.log(this.state.patterns);
+    //console.log("This.State");
+    //console.log(this.state.patterns);
     while (i < that.state.patterns.length) {
       var patSubset;
       if (i+3 < that.state.patterns.length) {
@@ -63,7 +63,7 @@ class Patterns extends React.Component {
       } else {
         patSubset = that.state.patterns.slice(i);
       }
-      console.log(patSubset);
+      //console.log(patSubset);
       rows.push(that.renderThree(patSubset));
       i = i + 3;
     }

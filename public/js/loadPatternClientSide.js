@@ -12,7 +12,7 @@ $(function(){
       "patterns",
       function(response) {
         console.log("Loading Pattern");
-        var pid = response.patterns[2]._id;
+        var pid = response.patterns[0]._id;
         $.get(
           "patterns/"+pid,
           function(res) {

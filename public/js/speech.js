@@ -53,6 +53,8 @@ var processSpeech = function(transcript) {
   console.log("I heard...");
   console.log(transcript);
 
+  lastSaid = "Welcome to Pearl Pal";
+
   // Helper function to detect if any commands appear in a string
   var userSaid = function(str, commands) {
     str = str.toLowerCase();
@@ -83,11 +85,28 @@ var processSpeech = function(transcript) {
     }
   }
 
+  if (userSaid(transcript, ["what"])) {
+    var info = helpStitch().split(".")[0];
+    console.log(info);
+    lastSaid = info;
+    generateSpeech(info);
+    return true;
+  }
+
+  if (userSaid(transcript, ["how"])) {
+    var info = helpStitch().split(".").slice(1).join(".");
+    console.log(info);
+    lastSaid = info;
+    generateSpeech(info);
+    return true;
+  }
+
   // Assistance
   if (userSaid(transcript, keyWords.help)) {
     if (userSaid(transcript, keyWords.stitch)) {
       var info = helpStitch();
       console.log(info);
+      lastSaid = info;
       generateSpeech(info);
       return true;
     }
@@ -95,13 +114,14 @@ var processSpeech = function(transcript) {
       console.log("User wants help on this row");
       var info = helpRow();
       console.log(info);
+      lastSaid = info;
       generateSpeech(info);
       return true;
     }
   }
 
   // Tracking
-  if (userSaid(transcript, ["pause", "stop"])) {
+  if (userSaid(transcript, ["pause", "paws", "stop"])) {
     toggleTracking();
     return true;
   }
@@ -115,6 +135,15 @@ var processSpeech = function(transcript) {
   }
   if (userSaid(transcript, ['reset'])) {
     selectId("stitch-0-0");
+  }
+  if (userSaid(transcript, ["repeat"])) {
+    generateSpeech(lastSaid);
+  }
+
+  // Politeness
+  if (userSaid(transcript, ['thank', 'thanks', 'pal'])) {
+    lastSaid = "You're welcome, Laura";
+    generateSpeech(lastSaid);
   }
 
   return false; // no action taken

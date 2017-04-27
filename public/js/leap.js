@@ -74,14 +74,15 @@ var controller = Leap.loop({frame: function(frame) {
   }
 }});
 
-recalibrate = (function(time) {
+recalibrate = (function(time, track) {
   return function() {
     console.log("Recalibrating Leap Motion");
     time = 0;
     tipSum = 0;
     tipAvg = 0;
+    track = true;
   };
-})(t);
+})(t, TRACKING);
 
 toggleTracking = (function(track) {
   return function() {

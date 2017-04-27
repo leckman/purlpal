@@ -12,10 +12,12 @@ class Signup extends React.Component {
   }
 
   handleChange(event) {
+    console.log("Initiating Change Event");
     this.setState({ [event.target.name]: event.target.value });
   }
 
   handleSignup(event) {
+    console.log("Initiating Signup Procedure");
     event.preventDefault();
     this.props.dispatch(signup(this.state.name, this.state.email, this.state.password));
   }

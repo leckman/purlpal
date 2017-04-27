@@ -19,7 +19,6 @@ exports.getAllPublic = function(req, res) {
 };
 
 exports.getExpanded = function(req, res) {
-  console.log(req);
   Pattern.fullyPopulate(req.params.patternId, function(err, pat) {
     res.send({pattern: pat});
   });
