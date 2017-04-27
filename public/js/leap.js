@@ -74,14 +74,16 @@ var controller = Leap.loop({frame: function(frame) {
   }
 }});
 
-var recalibrate = (function(time) {
+recalibrate = (function(time) {
   return function() {
     console.log("Recalibrating Leap Motion");
     time = 0;
+    tipSum = 0;
+    tipAvg = 0;
   };
 })(t);
 
-var toggleTracking = (function(track) {
+toggleTracking = (function(track) {
   return function() {
     if (track) {
       $("#toggle-leap").html("Turn On Motion Recognition");
@@ -92,13 +94,6 @@ var toggleTracking = (function(track) {
       console.log("Leap Motion Recognition Resumed");
       track = true;
     }
-  };
-})(TRACKING);
-
-var startTracking = (function(track) {
-  return function() {
-    console.log("Leap Motion Recognition Resumed");
-    track = true;
   };
 })(TRACKING);
 
