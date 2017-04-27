@@ -100,6 +100,20 @@ var processSpeech = function(transcript) {
     }
   }
 
+  // Tracking
+  if (userSaid(transcript, ["pause", "stop"])) {
+    toggleTracking();
+    return true;
+  }
+  if (userSaid(transcript, ["start", "resume"])) {
+    toggleTracking();
+    return true;
+  }
+  if (userSaid(transcript, ['calibrate', 'recalibrate'])) {
+    recalibrate();
+    return true;
+  }
+
   return false; // no action taken
 };
 
