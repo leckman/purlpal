@@ -91,7 +91,7 @@ var processSpeech = function(transcript) {
       generateSpeech(info);
       return true;
     }
-    if (userSaid(transcript, keywords.row)) {
+    if (userSaid(transcript, keyWords.row)) {
       console.log("User wants help on this row");
       var info = helpRow();
       console.log(info);
@@ -112,6 +112,9 @@ var processSpeech = function(transcript) {
   if (userSaid(transcript, ['calibrate', 'recalibrate'])) {
     recalibrate();
     return true;
+  }
+  if (userSaid(transcript, ['reset'])) {
+    selectId("stitch-0-0");
   }
 
   return false; // no action taken

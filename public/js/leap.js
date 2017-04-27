@@ -78,6 +78,8 @@ recalibrate = (function(time) {
   return function() {
     console.log("Recalibrating Leap Motion");
     time = 0;
+    tipSum = 0;
+    tipAvg = 0;
   };
 })(t);
 
