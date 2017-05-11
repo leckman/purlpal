@@ -1,5 +1,5 @@
 formatChartPattern = function(pattern) {
-  var rows = pattern.rows;
+  var rows = pattern.rows.slice(0);
   rows.reverse(); // iterate backwards
   var numRows = rows.length;
 
