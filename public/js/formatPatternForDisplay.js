@@ -19,9 +19,9 @@ formatChartPattern = function(pattern) {
     }
     var numStitches = stitches.length - 1;
     stitches.forEach(function(stitch, j){
-      var topTag = "<td id='"+getIdOfStitch(i-1,j)+"'>";
+      var topTag = "<td class='st' id='"+getIdOfStitch(i-1,j)+"'>";
       if (i % 2 === 1) {
-        topTag = "<td id='"+getIdOfStitch(i-1,numStitches - j)+"'>";
+        topTag = "<td class='st' id='"+getIdOfStitch(i-1,numStitches - j)+"'>";
       }
       var contents = stitch[whichSymb];
       var botTag = "</td>";
@@ -36,6 +36,16 @@ formatChartPattern = function(pattern) {
     htmlTable += htmlRow;
   });
   return htmlTable+"</table>";
+};
+
+getKey = function(rows) {
+
+  var htmlTable = "<table class='key table table-bordered'>";
+  htmlTable += "<tr><th>Symbol</th><th>Right Side (Odd Rows)</th><th>Wrong Side (Even Rows)</th></tr>";
+  htmlTable += "<tr><td>V</td><td>Knit</td><td>Purl</td></tr>"; // V
+  htmlTable += "<tr><td>-</td><td>Purl</td><td>Knit</td></tr>"; // -
+  htmlTable += "</table>";
+  return htmlTable;
 };
 
 

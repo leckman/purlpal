@@ -4,11 +4,13 @@ console.log("Ready to Detect Speech Input");
 
 $().ready(function(){
 
-  var speechCommands = "<h3>Speech Commands</h2>" + "<h4>Navigation</h4><p>Next Stitch</p><p>Next Row</p>" + "<h4>Help</h4><p>What is this stitch/row?</p>";
+  var speechCommands = "<h4>Speech Commands</h4>" + "<p>Next Stitch<br>Next Row<br>What is this stitch/row?</p>";
 
   $("#app-body").append('<div id="sidebar"><div id="toggle-div"></div><div id="info" >'+speechCommands+'</div></div>');
+  $("#info").append(getKey([]));
   $("#toggle-div").append("<br><button id='toggle-info' type='button' class='btn'><i class='fa fa-cog fa-lg' aria-hidden='true'></i></button>");
   $("#info").append("<button id='mic-off' type='button' class='btn'>Turn Off Voice Recognition</button>");
+  $("#info").append("<button id='switch-pat' type='button' class='btn'></button>");
   $("#info").hide();
   $("#toggle-info").click(function () {
   		if ($(this).data('name') == 'show') {
@@ -39,9 +41,10 @@ $().ready(function(){
 
 var keyWords = {
   stitch: ["stitch", "ditch", "forward", "step", "state", "stick"],
-  row: ["row", "roll", "room", "down", "route"],
+  row: ["row", "roll", "room", "down", "route", "road", "line"],
   move: ["next", "advance", "move", "go"],
-  help: ["help", "what", "how"]
+  help: ["help", "what", "how"],
+  reset: ["reset", "set", "back", "recette"]
 };
 
 // processSpeech(transcript)
@@ -87,7 +90,6 @@ var processSpeech = function(transcript) {
 
   if (userSaid(transcript, ["what"])) {
     var info = helpStitch().split(".")[0];
-    console.log(info);
     lastSaid = info;
     generateSpeech(info);
     return true;
@@ -95,7 +97,6 @@ var processSpeech = function(transcript) {
 
   if (userSaid(transcript, ["how"])) {
     var info = helpStitch().split(".").slice(1).join(".");
-    console.log(info);
     lastSaid = info;
     generateSpeech(info);
     return true;
@@ -105,15 +106,12 @@ var processSpeech = function(transcript) {
   if (userSaid(transcript, keyWords.help)) {
     if (userSaid(transcript, keyWords.stitch)) {
       var info = helpStitch();
-      console.log(info);
       lastSaid = info;
-      generateSpeech(info);
       return true;
     }
     if (userSaid(transcript, keyWords.row)) {
       console.log("User wants help on this row");
       var info = helpRow();
-      console.log(info);
       lastSaid = info;
       generateSpeech(info);
       return true;
@@ -133,8 +131,13 @@ var processSpeech = function(transcript) {
     recalibrate();
     return true;
   }
-  if (userSaid(transcript, ['reset'])) {
-    selectId("stitch-0-0");
+  if (userSaid(transcript, keyWords.reset)) {
+    if (userSaid(transcript, keyWords.row)) {
+      resetRow();
+    } else {
+      selectId("stitch-0-0");
+    }
+    return true;
   }
   if (userSaid(transcript, ["repeat"])) {
     generateSpeech(lastSaid);

@@ -57,6 +57,18 @@ table.pattern {
   font-family: monospace;
 }
 
+th {
+  font-family: "Open Sans", "Helvetica Neue", helvetica, arial, sans-serif;
+}
+
+table.key {
+  width: 45px;
+  font-size: 13px;
+  font-family: monospace;
+  padding: 20px 20px 20px 20px;
+}
+
+
 table td.pattern{
   display: block;
   width: 60px;
