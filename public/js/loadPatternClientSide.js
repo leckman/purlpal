@@ -95,7 +95,7 @@ $(function(){
    var s = document.getElementById('sound');
    s.volume = 0.1;
    s.play();
- };
+  };
 
   resetRow = function() {
     $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
@@ -162,7 +162,7 @@ $(function(){
   selectRow = function(k) {
     var desired_row = $(k).parent().attr('id').split("-")[2];
     $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
-    pattern.current_row = desired_row;
+    pattern.current_row = Number(desired_row);
     $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
     register();
   };
