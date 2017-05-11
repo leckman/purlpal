@@ -1,3 +1,44 @@
+formatChartPattern = function(pattern) {
+  var rows = pattern.rows;
+  rows.reverse(); // iterate backwards
+  var numRows = rows.length;
+
+  var htmlTable = "<table class='pattern table table-bordered'>";
+  rows.forEach(function(row, ii) {
+    var i = numRows - ii;
+    var htmlRow = "<tr id='"+getIdOfRow(i-1)+"'>";
+    var stitches = row.stitches;
+    var whichSymb = "r_symbol";
+    if (i % 2 === 0) {
+      // odd rows, iterate backwards
+      stitches.reverse();
+      whichSymb = "w_symbol";
+      htmlRow += "<td class='rowNum''>" + String(i) + "</td>";
+    }  else {
+      htmlRow += "<td class='rowNum''></td>";
+    }
+    var numStitches = stitches.length - 1;
+    stitches.forEach(function(stitch, j){
+      var topTag = "<td id='"+getIdOfStitch(i-1,j)+"'>";
+      if (i % 2 === 1) {
+        topTag = "<td id='"+getIdOfStitch(i-1,numStitches - j)+"'>";
+      }
+      var contents = stitch[whichSymb];
+      var botTag = "</td>";
+      htmlRow = htmlRow + topTag + contents + botTag;
+    });
+    if (i % 2 === 1) {
+      htmlRow += "<td class='rowNum''>" + String(i) + "</td>";
+    } else {
+      htmlRow += "<td class='rowNum''></td>";
+    }
+    htmlRow += "</tr>";
+    htmlTable += htmlRow;
+  });
+  return htmlTable+"</table>";
+};
+
+
 // returns html string
 formatRSPattern = function(pattern) {
   var rows = pattern.rows;

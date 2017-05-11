@@ -22,14 +22,14 @@ $(function(){
             console.log("PATTERN");
             console.log(res.pattern);
             pattern = res.pattern;
-            rs_pattern = formatRSPattern(pattern);
+            rs_pattern = formatChartPattern(pattern);
             ws_pattern = formatWSPattern(pattern);
             alt_pattern = formatAlternatingPattern(pattern);
             pattern.current_row = 0;
             pattern.current_stitch = 0;
             $("#heading").text("Pattern: " + pattern.name);
             $("#pattern-container").append("<h5>"+pattern.notes+"</h5");
-            $("#pattern-container").append("<div id='pattern-table'>"+alt_pattern+"</div>");
+            $("#pattern-container").append("<div id='pattern-table'>"+rs_pattern+"</div>");
             $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
             $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
             updateTdBindings();
@@ -101,7 +101,7 @@ $(function(){
     }
     console.log("attempting advance");
 
-    var current_row_length= $("#" + getIdOfRow(pattern.current_row) + " td").length;
+    var current_row_length= $("#" + getIdOfRow(pattern.current_row) + " td").length - 2;
     if (pattern.current_stitch + 1 < current_row_length) {
       $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
       pattern.current_stitch += 1;
