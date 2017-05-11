@@ -47,6 +47,8 @@ var Pattern = (function(patModel) {
     // first create rows
     Row.createMany(json.rows, function(err, rows){
       for (var i = 0; i < json.rows.length; i++) {
+        console.log("creating row", json.rows[i]);
+        console.log("parsed row", rows[i]);
         json.rows[i] = rows[i]._id;
       }
       patModel.create(json, callback);

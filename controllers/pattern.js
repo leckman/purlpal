@@ -1,5 +1,5 @@
 var Pattern = require('../models/Pattern');
-var testPatterns = require('../resources/testPatterns');
+var testPatterns = require('../public/resources/testPatterns');
 
 exports.getAllPublic = function(req, res) {
   Pattern.getAllPublic(function(err, pats) {
@@ -8,7 +8,11 @@ exports.getAllPublic = function(req, res) {
       Pattern.create(testPatterns[0], function(err, stockinette) {
         Pattern.create(testPatterns[1], function(err, garter) {
           Pattern.create(testPatterns[2], function(err, rib) {
-            res.send({patterns: [stockinette, garter, rib]});
+            Pattern.create(testPatterns[3], function(err, testA) {
+              Pattern.create(testPatterns[4], function(err, testB) {
+                res.send({patterns: [stockinette, garter, rib, testA, testB]});
+              });
+            });
           });
         });
       });
