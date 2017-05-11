@@ -3,7 +3,7 @@ formatChartPattern = function(pattern) {
   rows.reverse(); // iterate backwards
   var numRows = rows.length;
 
-  var htmlTable = "<table class='pattern table table-bordered'>";
+  var htmlTable = "<table class='pattern table table-bordered' id='pat-table'>";
   rows.forEach(function(row, ii) {
     var i = numRows - ii;
     var htmlRow = "<tr id='"+getIdOfRow(i-1)+"'>";

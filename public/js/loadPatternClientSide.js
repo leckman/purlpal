@@ -84,7 +84,7 @@ $(function(){
     toggle = true;
   };
 
-  click = function(){
+  register = function(){
    var s = document.getElementById('sound');
    s.volume = 0.1;
    s.play();
@@ -94,7 +94,7 @@ $(function(){
     $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
     pattern.current_stitch = 0;
     $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
-    click();
+    register();
   };
 
   selectId = function(id){
@@ -107,7 +107,7 @@ $(function(){
     pattern.current_stitch = Number(breakdown[2]);
     $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
     $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
-    click();
+    register();
   };
 
   advanceStitch = function(){
@@ -121,7 +121,7 @@ $(function(){
       $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
       pattern.current_stitch += 1;
       $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
-      click();
+      register();
     } else {
       advanceRow();
     }
@@ -133,16 +133,23 @@ $(function(){
       return;
     }
 
-    $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
-    $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
+    var current_pat_length = $(".pattern tr").length - 1;
+    if (pattern.current_row < current_pat_length){
 
-    pattern.current_row += 1;
-    pattern.current_stitch = 0;
+      $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
+      $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
 
-    $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
-    $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
+      pattern.current_row += 1;
+      pattern.current_stitch = 0;
 
-    click();
+      $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
+      $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
+
+      register();
+
+    }
+
+
   };
 
   helpStitch = function(){
