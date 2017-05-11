@@ -4,9 +4,9 @@ $(function(){
   pattern = {}; // global
   patternLoaded = false;
 
-  var rs_pattern;
-  var ws_pattern;
-  var alt_pattern;
+  var chart_pattern;
+  var writ_pattern;
+  WRITTEN = false;
 
   if (!pattern.name){
     $.get(
@@ -22,7 +22,7 @@ $(function(){
             console.log("PATTERN");
             console.log(res.pattern);
             pattern = res.pattern;
-            rs_pattern = formatChartPattern(pattern);
+            chart_pattern = formatChartPattern(pattern);
             writ_pattern = formatWrittenPattern(pattern);
             keyTable = getKey(pattern.rows);
             pattern.current_row = 0;
@@ -30,7 +30,7 @@ $(function(){
             $("#heading").text("Pattern: " + pattern.name);
             $("#pattern-container").append("<audio id=sound src='http://www.freesfx.co.uk/rx2/mp3s/5/16987_1461335348.mp3' hidden=true>");
             $("#pattern-container").append("<h5>"+pattern.notes+"</h5");
-            $("#pattern-container").append("<div id='pattern-table'>"+rs_pattern+"</div>");
+            $("#pattern-container").append("<div id='pattern-table'>"+chart_pattern+"</div>");
             $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
             $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
             updateTdBindings();
@@ -40,13 +40,6 @@ $(function(){
             $("#movement-buttons").append("<button id='advance-row-button' type='button' class='btn'>Advance Row</button>");
             $( "#advance-stitch-button" ).click(advanceStitch);
             $( "#advance-row-button" ).click(advanceRow);
-            // $("#pattern-container").append("<div id='view-buttons'></div>");
-            // $("#view-buttons").append("<button id='rs-only-button' type='button' class='btn'>Display Right Side Only</button>");
-            // $("#view-buttons").append("<button id='ws-only-button' type='button' class='btn'>Display Wrong Side Only</button>");
-            // $("#view-buttons").append("<button id='view-toggle-button' type='button' class='btn'>Display Active Side of Pattern</button>");
-            // $("#rs-only-button").click(rs_only);
-            // $("#ws-only-button").click(ws_only);
-            // $("#view-toggle-button").click(toggle_view);
           }
         );
       }
@@ -55,22 +48,14 @@ $(function(){
 
   var toggle = false;
 
-  rs_only = function(){
+  chart = function(){
     $("#pattern-table").empty();
-    $("#pattern-table").append(rs_pattern);
+    $("#pattern-table").append(chart_pattern);
     updateTdBindings();
     $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
     $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
     toggle = false;
-  };
-
-  ws_only = function(){
-    $("#pattern-table").empty();
-    $("#pattern-table").append(ws_pattern);
-    updateTdBindings();
-    $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
-    $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
-    toggle = false;
+    WRITTEN = false;
   };
 
   written = function() {
@@ -79,16 +64,7 @@ $(function(){
     updateTdBindings();
     $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
     toggle = false;
-  };
-
-  toggle_view = function(){
-    $("#pattern-table").empty();
-    $("#pattern-table").append(alt_pattern);
-
-    updateTdBindings();
-    $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
-    $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
-    toggle = true;
+    WRITTEN = true;
   };
 
   register = function(){
@@ -120,6 +96,10 @@ $(function(){
   advanceStitch = function(){
     if (!patternLoaded) {
       console.log("Hold on! Still setting up.");
+      return;
+    }
+
+    if (WRITTEN) {
       return;
     }
 

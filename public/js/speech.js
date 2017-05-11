@@ -46,7 +46,7 @@ $().ready(function(){
         selectRow(this);
       });
     } else {
-      rs_only();
+      chart();
       but.html("View Written Pattern");
     }
   });
