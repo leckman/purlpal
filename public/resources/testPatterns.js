@@ -28,7 +28,7 @@ var rib = {
 var testPatternA = {
   name: "User Study Pattern A",
   notes: "Garter stitch with a stockinette column on either side",
-  rows: [ knitRow, ["knit", "knit", "purl", "knit", "knit", "knit", "knit", "purl", "knit", "knit"], knitRow, ["knit", "knit", "purl", "knit", "knit", "knit", "knit", "purl", "knit", "knit"]]
+  rows: [ knitRow, ["knit", "knit", "purl", "knit", "knit", "knit", "knit", "purl", "knit", "knit"], knitRow, ["knit", "knit", "purl", "knit", "knit", "knit", "knit", "purl", "knit", "knit"],knitRow, ["knit", "knit", "purl", "knit", "knit", "knit", "knit", "purl", "knit", "knit"], knitRow, ["knit", "knit", "purl", "knit", "knit", "knit", "knit", "purl", "knit", "knit"]]
 };
 
 var testPatternB = {

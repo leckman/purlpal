@@ -10,7 +10,7 @@ $().ready(function(){
   $("#info").append(getKey([]));
   $("#toggle-div").append("<br><button id='toggle-info' type='button' class='btn'><i class='fa fa-cog fa-lg' aria-hidden='true'></i></button>");
   $("#info").append("<button id='mic-off' type='button' class='btn'>Turn Off Voice Recognition</button>");
-  $("#info").append("<button id='switch-pat' type='button' class='btn'></button>");
+  $("#info").append("<button id='switch-pat' type='button' class='btn'>View Written Pattern</button>");
   $("#info").hide();
   $("#toggle-info").click(function () {
   		if ($(this).data('name') == 'show') {
@@ -34,6 +34,21 @@ $().ready(function(){
   		     });
   		     $(this).data('name', 'show');
   		 }
+  });
+
+  $("#switch-pat").click(function(){
+    var but = $(this);
+    if (but.html() == "View Written Pattern") {
+      written();
+      but.html("View Chart");
+
+      $(".rw").dblclick(function(){
+        selectRow(this);
+      });
+    } else {
+      rs_only();
+      but.html("View Written Pattern");
+    }
   });
 });
 

@@ -38,6 +38,33 @@ formatChartPattern = function(pattern) {
   return htmlTable+"</table>";
 };
 
+formatWrittenPattern = function(pattern) {
+  var table = "<table class='pattern charted table table-bordered' id='pat-table'>";
+  pattern.rows.forEach(function(row, ii) {
+    var i = i+1;
+    var stitches = [];
+    row.stitches.forEach(function(stitch){
+      var last = stitches.length > 0 ? stitches[stitches.length-1][0] : "undefined";
+      var name = stitch.name.slice(0,1);
+      if (name == last) {
+        stitches[stitches.length-1][1] += 1;
+      } else {
+        stitches.push([name, 1]);
+      }
+    });
+    var instr = "";
+    stitches.forEach(function(st) {
+      instr += st[0];
+      instr += st[1];
+      instr += ", ";
+    });
+    instr = instr.slice(0,-2);
+    var tr= "<tr id='"+getIdOfRow(ii)+"'><td class=rowNum>"+String(ii+1)+"</td><td class='rw'>"+instr+"</td></tr>";
+    table += tr;
+  });
+  return table + "</table>";
+};
+
 getKey = function(rows) {
 
   var htmlTable = "<table class='key table table-bordered'>";

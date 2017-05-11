@@ -23,8 +23,7 @@ $(function(){
             console.log(res.pattern);
             pattern = res.pattern;
             rs_pattern = formatChartPattern(pattern);
-            ws_pattern = formatWSPattern(pattern);
-            alt_pattern = formatAlternatingPattern(pattern);
+            writ_pattern = formatWrittenPattern(pattern);
             keyTable = getKey(pattern.rows);
             pattern.current_row = 0;
             pattern.current_stitch = 0;
@@ -71,6 +70,14 @@ $(function(){
     updateTdBindings();
     $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
     $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
+    toggle = false;
+  };
+
+  written = function() {
+    $("#pattern-table").empty();
+    $("#pattern-table").append(writ_pattern);
+    updateTdBindings();
+    $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
     toggle = false;
   };
 
@@ -150,6 +157,14 @@ $(function(){
     }
 
 
+  };
+
+  selectRow = function(k) {
+    var desired_row = $(k).parent().attr('id').split("-")[2];
+    $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
+    pattern.current_row = desired_row;
+    $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
+    register();
   };
 
   helpStitch = function(){
