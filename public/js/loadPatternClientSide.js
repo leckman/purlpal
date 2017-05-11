@@ -6,24 +6,30 @@ $(function(){
 
   var rs_pattern;
   var ws_pattern;
+  var alt_pattern;
 
   if (!pattern.name){
     $.get(
       "patterns",
       function(response) {
         console.log("Loading Pattern");
-        var pid = response.patterns[0]._id;
+        console.log("PATTERNS");
+        console.log(response.patterns);
+        var pid = response.patterns[3]._id;
         $.get(
           "patterns/"+pid,
           function(res) {
+            console.log("PATTERN");
+            console.log(res.pattern);
             pattern = res.pattern;
             rs_pattern = formatRSPattern(pattern);
             ws_pattern = formatWSPattern(pattern);
+            alt_pattern = formatAlternatingPattern(pattern);
             pattern.current_row = 0;
             pattern.current_stitch = 0;
             $("#heading").text("Pattern: " + pattern.name);
             $("#pattern-container").append("<h5>"+pattern.notes+"</h5");
-            $("#pattern-container").append("<div id='pattern-table'>"+rs_pattern+"</div>");
+            $("#pattern-container").append("<div id='pattern-table'>"+alt_pattern+"</div>");
             $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
             $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
             updateTdBindings();
@@ -68,11 +74,8 @@ $(function(){
 
   toggle_view = function(){
     $("#pattern-table").empty();
-    if (pattern.current_row % 2 === 0) { // rs row
-      $("#pattern-table").append(rs_pattern);
-    } else {
-      $("#pattern-table").append(ws_pattern);
-    }
+    $("#pattern-table").append(alt_pattern);
+
     updateTdBindings();
     $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
     $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
@@ -121,17 +124,17 @@ $(function(){
     pattern.current_row += 1;
     pattern.current_stitch = 0;
 
-    if(toggle){
-      $("#pattern-table").empty();
-      if (pattern.current_row % 2 === 0) { // rs row
-        $("#pattern-table").append(rs_pattern);
-      } else {
-        $("#pattern-table").append(ws_pattern);
-      }
-      $(".pattern td").dblclick(function() {
-        selectId($(this).attr("id"));
-      });
-    }
+    // if(toggle){
+    //   $("#pattern-table").empty();
+    //   if (pattern.current_row % 2 === 0) { // rs row
+    //     $("#pattern-table").append(rs_pattern);
+    //   } else {
+    //     $("#pattern-table").append(ws_pattern);
+    //   }
+    //   $(".pattern td").dblclick(function() {
+    //     selectId($(this).attr("id"));
+    //   });
+    // }
 
     $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
     $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
