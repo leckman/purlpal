@@ -100,6 +100,13 @@ var processSpeech = function(transcript) {
       advanceRow();
       return true;
     }
+    if (userSaid(transcript, ["back"])) {
+      backStitch();
+      return true;
+    }
+
+    smartForward();
+    return true;
   }
 
   if (userSaid(transcript, ["what"])) {
@@ -148,7 +155,7 @@ var processSpeech = function(transcript) {
     }
   }
 
-  // Tracking
+  // Leap Motion Tracking
   if (userSaid(transcript, ["pause", "paws", "stop"])) {
     toggleTracking();
     return true;
@@ -164,10 +171,11 @@ var processSpeech = function(transcript) {
   if (userSaid(transcript, keyWords.reset)) {
     if (userSaid(transcript, keyWords.row)) {
       resetRow();
-    } else if (userSaid(transcript, keyWords.stitch.slice().push("one"))){
+    } else if (userSaid(transcript, keyWords.stitch.concat(["one", "move"]))){
+      // allows for commands like "back one stitch", "back one", and "move back"
       backStitch();
     } else if (userSaid(transcript, keyWords.pattern)){
-      selectId("stitch-0-0");
+      selectId(getIdOfStitch(0,0));
     } else {
       smartReset();
     }
@@ -201,5 +209,23 @@ var generateSpeech = function(message, callback) {
     if (typeof callback !== "undefined")
       msg.onend = callback;
     speechSynthesis.speak(msg);
+  }
+};
+
+var smartReset = function() {
+  if (pattern.current_stitch < 3) {
+    // 0-indexed, so do this for first three stitches
+    resetRow();
+  } else {
+    backStitch();
+  }
+};
+
+var smartForward = function() {
+  row_length = pattern.rows[pattern.current_row].stitches.length;
+  if (pattern.current_stitch + 3 > row_length) {
+    advanceRow();
+  } else {
+    advanceStitch();
   }
 };
