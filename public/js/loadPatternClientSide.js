@@ -188,6 +188,14 @@ $(function(){
     }
   };
 
+  smartReset = function() {
+    if (pattern.current_stitch < 3) {
+      resetRow();
+    } else {
+      decrementRow();
+    }
+  };
+
   selectRow = function(k) {
     var desired_row = $(k).parent().attr('id').split("-")[2];
     var lastStitchType = getStitchType(pattern.current_row, pattern.current_stitch);

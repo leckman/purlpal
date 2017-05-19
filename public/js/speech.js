@@ -59,7 +59,8 @@ var keyWords = {
   row: ["row", "roll", "room", "down", "route", "road", "line"],
   move: ["next", "advance", "move", "go"],
   help: ["help", "what", "how"],
-  reset: ["reset", "set", "back", "recette"]
+  reset: ["reset", "set", "back", "recette"],
+  pattern: ["pattern", "project"]
 };
 
 // processSpeech(transcript)
@@ -149,8 +150,12 @@ var processSpeech = function(transcript) {
   if (userSaid(transcript, keyWords.reset)) {
     if (userSaid(transcript, keyWords.row)) {
       resetRow();
-    } else {
+    } else if (userSaid(transcript, keyWords.stitch.slice().push("one"))){
+      backStitch();
+    } else if (userSaid(transcript, keyWords.pattern)){
       selectId("stitch-0-0");
+    } else {
+      smartReset();
     }
     return true;
   }
