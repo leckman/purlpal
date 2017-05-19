@@ -56,7 +56,7 @@ $().ready(function(){
 
 var keyWords = {
   stitch: ["stitch", "ditch", "forward", "step", "state", "stick"],
-  row: ["row", "roll", "room", "down", "route", "road", "line"],
+  row: ["row", "roll", "room", "route", "road", "line"],
   move: ["next", "advance", "move", "go"],
   help: ["help", "what", "how"],
   reset: ["reset", "set", "back", "recette"],
@@ -93,12 +93,10 @@ var processSpeech = function(transcript) {
   // Pattern Navigation
   if (userSaid(transcript, keyWords.move)) {
     if (userSaid(transcript, keyWords.stitch)) {
-      console.log("User wants to advance to next stitch");
       advanceStitch();
       return true;
     }
     if (userSaid(transcript, keyWords.row)) {
-      console.log("User wants to advance to next row");
       advanceRow();
       return true;
     }
@@ -130,6 +128,22 @@ var processSpeech = function(transcript) {
       var info = helpRow();
       lastSaid = info;
       generateSpeech(info);
+      return true;
+    }
+    if (userSaid(transcript, ["up"])) {
+      if (WRITTEN) {
+        // written pattern is displayed, user wants to go back a row
+        decrementRow();
+      }
+      advanceRow(); // charted pattern is displayed
+      return true;
+    }
+    if (userSaid(transcript, ["down"])) {
+      if (WRITTEN) {
+        // written pattern is displayed, user wants to go to next row
+        advanceRow();
+      }
+      decrementRow(); // charted pattern is displayed
       return true;
     }
   }
