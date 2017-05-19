@@ -6,9 +6,14 @@ $().ready(function(){
 
   var speechCommands = "<h4>Speech Commands</h4>" + "<p>Next Stitch<br>Next Row<br>What is this stitch/row?</p>";
 
+  // add sidebar
   $("#app-body").append('<div id="sidebar"><div id="toggle-div"></div><div id="info" >'+speechCommands+'</div></div>');
   $("#info").append(getKey([]));
   $("#toggle-div").append("<br><button id='toggle-info' type='button' class='btn'><i class='fa fa-cog fa-lg' aria-hidden='true'></i></button>");
+  $("#info").append("<button id='toggle-leap' type='button' class='btn'>Turn Off Motion Recognition</button>");
+  $("#toggle-leap").click(toggleTracking);
+  $("#info").append("<button id='calibrate-leap' type='button' class='btn'>Re-Calibrate Leap Motion</button>");
+  $("#calibrate-leap").click(recalibrate);
   $("#info").append("<button id='mic-off' type='button' class='btn'>Turn Off Voice Recognition</button>");
   $("#info").append("<button id='switch-pat' type='button' class='btn'>View Written Pattern</button>");
   $("#info").hide();
@@ -39,21 +44,22 @@ $().ready(function(){
   $("#switch-pat").click(function(){
     var but = $(this);
     if (but.html() == "View Written Pattern") {
-      written();
+      written(); // switch to written pattern
       but.html("View Chart");
 
+      // set up doubleclick functionality on written pattern
       $(".rw").dblclick(function(){
         selectRow(this);
       });
     } else {
-      chart();
+      chart(); // switch to charted pattern
       but.html("View Written Pattern");
     }
   });
 });
 
 
-
+// keywords, their alternates, and homophones
 var keyWords = {
   stitch: ["stitch", "ditch", "forward", "step", "state", "stick"],
   row: ["row", "roll", "room", "route", "road", "line"],
@@ -92,52 +98,19 @@ var processSpeech = function(transcript) {
 
   // Pattern Navigation
   if (userSaid(transcript, keyWords.move)) {
-    if (userSaid(transcript, keyWords.stitch)) {
+    if (userSaid(transcript, keyWords.stitch)) { // next stitch
       advanceStitch();
       return true;
     }
-    if (userSaid(transcript, keyWords.row)) {
+    if (userSaid(transcript, keyWords.row)) { // next row
       advanceRow();
       return true;
     }
-    if (userSaid(transcript, ["back"])) {
+    if (userSaid(transcript, ["back"])) { // move back
       backStitch();
       return true;
     }
-
-    smartForward();
-    return true;
-  }
-
-  if (userSaid(transcript, ["what"])) {
-    var info = helpStitch().split(".")[0];
-    lastSaid = info;
-    generateSpeech(info);
-    return true;
-  }
-
-  if (userSaid(transcript, ["how"])) {
-    var info = helpStitch().split(".").slice(1).join(".");
-    lastSaid = info;
-    generateSpeech(info);
-    return true;
-  }
-
-  // Assistance
-  if (userSaid(transcript, keyWords.help)) {
-    if (userSaid(transcript, keyWords.stitch)) {
-      var info = helpStitch();
-      lastSaid = info;
-      return true;
-    }
-    if (userSaid(transcript, keyWords.row)) {
-      console.log("User wants help on this row");
-      var info = helpRow();
-      lastSaid = info;
-      generateSpeech(info);
-      return true;
-    }
-    if (userSaid(transcript, ["up"])) {
+    if (userSaid(transcript, ["up"])) { // move up
       if (WRITTEN) {
         // written pattern is displayed, user wants to go back a row
         decrementRow();
@@ -145,7 +118,7 @@ var processSpeech = function(transcript) {
       advanceRow(); // charted pattern is displayed
       return true;
     }
-    if (userSaid(transcript, ["down"])) {
+    if (userSaid(transcript, ["down"])) { // move down
       if (WRITTEN) {
         // written pattern is displayed, user wants to go to next row
         advanceRow();
@@ -153,6 +126,24 @@ var processSpeech = function(transcript) {
       decrementRow(); // charted pattern is displayed
       return true;
     }
+
+    smartForward(); // Forward or Next
+    return true;
+  }
+
+  // Assistance
+  if (userSaid(transcript, ["what"])) { // what is this stitch? query
+    var info = helpStitch().split(".")[0];
+    lastSaid = info;
+    generateSpeech(info);
+    return true;
+  }
+
+  if (userSaid(transcript, ["how", "help"])) { // how is it done? query
+    var info = helpStitch().split(".").slice(1).join(".");
+    lastSaid = info;
+    generateSpeech(info);
+    return true;
   }
 
   // Leap Motion Tracking
@@ -168,26 +159,33 @@ var processSpeech = function(transcript) {
     recalibrate();
     return true;
   }
+
+  // Navigating backwards / resetting
   if (userSaid(transcript, keyWords.reset)) {
     if (userSaid(transcript, keyWords.row)) {
+      // reset row
       resetRow();
     } else if (userSaid(transcript, keyWords.stitch.concat(["one", "move"]))){
       // allows for commands like "back one stitch", "back one", and "move back"
       backStitch();
     } else if (userSaid(transcript, keyWords.pattern)){
+      // reset to beginning
       selectId(getIdOfStitch(0,0));
     } else {
-      smartReset();
+      smartReset(); // just "Reset" or "Back"
     }
     return true;
   }
+
+  // repeated instructions
+  // not yet fully supported
   if (userSaid(transcript, ["repeat"])) {
     generateSpeech(lastSaid);
   }
 
   // Politeness
   if (userSaid(transcript, ['thank', 'thanks', 'pal'])) {
-    lastSaid = "You're welcome, Laura";
+    lastSaid = "You're welcome, Laura"; // will be generated from user accounts in the future
     generateSpeech(lastSaid);
   }
 
@@ -212,6 +210,9 @@ var generateSpeech = function(message, callback) {
   }
 };
 
+/**
+ * Dynamically figure out how to respond to "Back" based on current pattern information
+ */
 var smartReset = function() {
   if (pattern.current_stitch < 3) {
     // 0-indexed, so do this for first three stitches
@@ -221,6 +222,9 @@ var smartReset = function() {
   }
 };
 
+/**
+ * Dynamically figure out how to respond to "Next" based on current pattern information
+ */
 var smartForward = function() {
   row_length = pattern.rows[pattern.current_row].stitches.length;
   if (pattern.current_stitch + 3 > row_length) {

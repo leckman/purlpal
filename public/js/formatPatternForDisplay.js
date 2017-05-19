@@ -1,3 +1,6 @@
+/**
+ * HTML Chart interpretation of pattern object from database
+ */
 formatChartPattern = function(pattern) {
   var rows = pattern.rows.slice(0);
   rows.reverse(); // iterate backwards
@@ -38,6 +41,9 @@ formatChartPattern = function(pattern) {
   return htmlTable+"</table>";
 };
 
+/**
+ * HTML Written interpretation of pattern from database
+ */
 formatWrittenPattern = function(pattern) {
   var table = "<table class='pattern charted table table-bordered' id='pat-table'>";
   pattern.rows.forEach(function(row, ii) {
@@ -65,6 +71,10 @@ formatWrittenPattern = function(pattern) {
   return table + "</table>";
 };
 
+/**
+ * Key for the chart
+ * Will eventually be dynamic to include only those symbols used in the chart
+ */
 getKey = function(rows) {
 
   var htmlTable = "<table class='key table table-bordered'>";
@@ -76,7 +86,7 @@ getKey = function(rows) {
 };
 
 
-// returns html string
+// Original Plan Chart, DEPRECATED
 formatRSPattern = function(pattern) {
   var rows = pattern.rows;
   var htmlTable = "<table class='pattern table table-bordered'>";
@@ -105,6 +115,7 @@ formatRSPattern = function(pattern) {
   return htmlTable+"</table>";
 };
 
+// Original Plan chart option, DEPRECATED
 formatAlternatingPattern = function(pattern) {
   var rows = pattern.rows;
   var htmlTable = "<table class='pattern table table-bordered'>";
@@ -123,6 +134,7 @@ formatAlternatingPattern = function(pattern) {
   return htmlTable+"</table>";
 };
 
+// Original Plan Chart Option, DEPRECATED
 formatWSPattern = function(pattern) {
   var rows = pattern.rows;
   var htmlTable = "<table class='pattern table table-bordered'>";
@@ -151,10 +163,12 @@ formatWSPattern = function(pattern) {
   return htmlTable+"</table>";
 };
 
+// helper method for uniform stitch ids
 getIdOfStitch = function(row, col) {
   return "stitch-"+row+"-"+col;
 };
 
+// helper method for uniform row ids
 getIdOfRow = function(row) {
   return "pattern-row-"+row;
 };
