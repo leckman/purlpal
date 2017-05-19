@@ -28,7 +28,8 @@ $(function(){
             pattern.current_row = 0;
             pattern.current_stitch = 0;
             $("#heading").text("Pattern: " + pattern.name);
-            $("#pattern-container").append("<audio id=sound src='http://www.freesfx.co.uk/rx2/mp3s/5/16987_1461335348.mp3' hidden=true>");
+            $("#pattern-container").append("<audio id=sound src='http://www.freesfx.co.uk/rx2/mp3s/5/16987_1461335348.mp3' hidden=true>"); // "heavy throw switch" sound
+            $("#pattern-container").append("<audio id=changeSound src='http://www.freesfx.co.uk/rx2/mp3s/6/18654_1464810668.mp3' hidden=true>"); // "close lighter" sound
             $("#pattern-container").append("<h5>"+pattern.notes+"</h5");
             $("#pattern-container").append("<div id='pattern-table'>"+chart_pattern+"</div>");
             $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
@@ -67,30 +68,36 @@ $(function(){
     WRITTEN = true;
   };
 
-  register = function(){
-   var s = document.getElementById('sound');
-   s.volume = 0.1;
-   s.play();
+  register = function(lastStitch, nextStitch){
+    // changeSound is higher pitched, played when the next stitch is different
+    whichSound = lastStitch == nextStitch ? 'sound' : 'changeSound';
+    var s = document.getElementById(whichSound);
+    s.volume = 0.1;
+    s.play();
   };
 
   resetRow = function() {
+    var lastStitchType = getStitchType(pattern.current_row, pattern.current_stitch);
+
     $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
     pattern.current_stitch = 0;
     $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
-    register();
+    register(lastStitchType, getStitchType(pattern.current_row, pattern.current_stitch));
   };
 
   selectId = function(id){
     // remove old styling
     $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
     $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
+    var lastStitchType = getStitchType(pattern.current_row, pattern.current_stitch);
+
     // add new styling
     var breakdown = id.split("-");
     pattern.current_row = Number(breakdown[1]);
     pattern.current_stitch = Number(breakdown[2]);
     $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
     $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
-    register();
+    register(lastStitchType, getStitchType(pattern.current_row, pattern.current_stitch));
   };
 
   advanceStitch = function(){
@@ -99,16 +106,18 @@ $(function(){
       return;
     }
 
-    if (WRITTEN) {
-      return;
-    }
+    var lastStitchType = getStitchType(pattern.current_row, pattern.current_stitch);
+    var current_row_length= pattern.rows[pattern.current_row].length;
 
-    var current_row_length= $("#" + getIdOfRow(pattern.current_row) + " td").length - 2;
     if (pattern.current_stitch + 1 < current_row_length) {
-      $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
-      pattern.current_stitch += 1;
-      $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
-      register();
+      if (WRITTEN) {
+        pattern.current_stitch += 1;
+      } else {
+        $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
+        pattern.current_stitch += 1;
+        $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
+        register(lastStitchType, getStitchType(pattern.current_row, pattern.current_stitch));
+      }
     } else {
       advanceRow();
     }
@@ -119,7 +128,7 @@ $(function(){
       console.log("Hold on! Still setting up.");
       return;
     }
-
+    var lastStitchType = getStitchType(pattern.current_row, pattern.current_stitch);
     var current_pat_length = $(".pattern tr").length - 1;
     if (pattern.current_row < current_pat_length){
 
@@ -132,7 +141,7 @@ $(function(){
       $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
       $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
 
-      register();
+      register(lastStitchType, getStitchType(pattern.current_row, pattern.current_stitch));
 
     }
 
@@ -141,10 +150,11 @@ $(function(){
 
   selectRow = function(k) {
     var desired_row = $(k).parent().attr('id').split("-")[2];
+    var lastStitchType = getStitchType(pattern.current_row, pattern.current_stitch);
     $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
     pattern.current_row = Number(desired_row);
     $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
-    register();
+    register(lastStitchType, getStitchType(pattern.current_row, pattern.current_stitch));
   };
 
   helpStitch = function(){
@@ -163,5 +173,11 @@ $(function(){
       selectId($(this).attr("id"));
     });
     $(".st").attr('title', 'Double click to move here');
+  };
+
+  getStitchType = function(row, stitch) {
+    var r = pattern.rows[row];
+    var st = r.stitches[stitch];
+    return st.name;
   };
 });
