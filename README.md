@@ -1,6 +1,13 @@
 # purlpal
 Multimodal Knitting Pattern Tracker
 
+## To Run
+
+1. Start MongoDB using shell command mongod
+2. Navigate to the PurlPal folder and install dependencies with npm install
+3. Start the server with npm start
+4. View the app at localhost:3000
+Note: A lot of the initial database setup is performed when the browser tries to access resources and finds that they don't exist yet - if the first load is wonky, wait a minute and reload. All resources should be available by that point.
 
 
 ## Mega Boilerplate App (Node.js)
