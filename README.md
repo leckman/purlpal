@@ -9,6 +9,21 @@ Multimodal Knitting Pattern Tracker
 4. View the app at localhost:3000
 Note: A lot of the initial database setup is performed when the browser tries to access resources and finds that they don't exist yet - if the first load is wonky, wait a minute and reload. All resources should be available by that point.
 
+## Guide to the code
+
+- app/ Scaffolding for server-side rendering in React. Largely not in use, primarily template code.
+- controllers/ Handlers for database requests. controllers/pattern.js handles pattern fetching.
+- models/ Data models & database methods.
+- public/js/ This is the meat of the code.
+- - formatPatternForDisplay.js contains helper methods for creating the pattern tables in HTML.
+- - loadPatternClientSide.js handles the visual interface setup and provides methods for navigation.
+- - leap.js handles the motion tracking.
+- - speech.js handles the speech recognition (and formats the sidebar).
+- - setupSpeech.js sets up the speech recognition tech and is largely borrowed from the Battleship assignment.
+- public/resources/testPatterns.js contains sample input of what patterns look like before they are imported to the internal database representation
+- test/server/models contains unit tests for data models & database methods. Other test folders are scaffolding from MegaBoilerPlate.
+- views/layouts/main.handlebars is the main file loaded in server-side rendering, which I build off of for the current client-side rendering format. 
+
 
 ## Mega Boilerplate App (Node.js)
 
