@@ -15,6 +15,7 @@ $(function(){
         console.log("Loading Pattern");
         console.log("PATTERNS");
         console.log(response.patterns);
+        // change index to load a different pattern from the database - this loads pattern "User Study Pattern A"
         var pid = response.patterns[3]._id;
         $.get(
           "patterns/"+pid,
@@ -47,15 +48,12 @@ $(function(){
     );
   }
 
-  var toggle = false;
-
   chart = function(){
     $("#pattern-table").empty();
     $("#pattern-table").append(chart_pattern);
     updateTdBindings();
     $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
     $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
-    toggle = false;
     WRITTEN = false;
   };
 
@@ -64,7 +62,6 @@ $(function(){
     $("#pattern-table").append(writ_pattern);
     updateTdBindings();
     $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
-    toggle = false;
     WRITTEN = true;
   };
 
@@ -107,8 +104,8 @@ $(function(){
     }
 
     var lastStitchType = getStitchType(pattern.current_row, pattern.current_stitch);
-    var current_row_length= pattern.rows[pattern.current_row].length;
-
+    var current_row_length= pattern.rows[pattern.current_row].stitches.length;
+    
     if (pattern.current_stitch + 1 < current_row_length) {
       if (WRITTEN) {
         pattern.current_stitch += 1;
