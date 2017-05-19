@@ -105,7 +105,7 @@ $(function(){
 
     var lastStitchType = getStitchType(pattern.current_row, pattern.current_stitch);
     var current_row_length= pattern.rows[pattern.current_row].stitches.length;
-    
+
     if (pattern.current_stitch + 1 < current_row_length) {
       if (WRITTEN) {
         pattern.current_stitch += 1;
@@ -141,8 +141,51 @@ $(function(){
       register(lastStitchType, getStitchType(pattern.current_row, pattern.current_stitch));
 
     }
+  };
 
+  backStitch = function(){
+    if (!patternLoaded) {
+      console.log("Hold on! Still setting up.");
+      return;
+    }
 
+    var lastStitchType = getStitchType(pattern.current_row, pattern.current_stitch);
+
+    if (pattern.current_stitch > 0) {
+      if (WRITTEN) {
+        pattern.current_stitch -= 1;
+      } else {
+        $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
+        pattern.current_stitch -= 1;
+        $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
+        register(lastStitchType, getStitchType(pattern.current_row, pattern.current_stitch));
+      }
+    } else {
+      decrementRow();
+    }
+  };
+
+  decrementRow = function(){
+    if (!patternLoaded) {
+      console.log("Hold on! Still setting up.");
+      return;
+    }
+    var lastStitchType = getStitchType(pattern.current_row, pattern.current_stitch);
+    var current_pat_length = $(".pattern tr").length - 1;
+    if (pattern.current_row > 0){
+
+      $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
+      $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
+
+      pattern.current_row -= 1;
+      pattern.current_stitch = pattern.rows[pattern.current_row].stitches.length - 1;
+
+      $("#" + getIdOfRow(pattern.current_row)).toggleClass("selectedRow");
+      $("#" + getIdOfStitch(pattern.current_row, pattern.current_stitch)).toggleClass("selectedStitch");
+
+      register(lastStitchType, getStitchType(pattern.current_row, pattern.current_stitch));
+
+    }
   };
 
   selectRow = function(k) {
